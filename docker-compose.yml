@@ -1,0 +1,32 @@
+version: '3'
+services:
+  jupyterlab-ds:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./work:/home/work
+    ports:
+      - "8888:8888"
+    image: jupyter:1.0
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO="yes"
+      - TZ=Asia/Tokyo
+    tty: true
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --allow-root --no-browser --NotebookApp.token=''
+  
+  rstudio:
+    build:
+      context: .
+      dockerfile: Dockerfile2
+    image: tidyverse:4.01_jp
+    environment: 
+        #任意のパスワードを設定する
+      - PASSWORD=1234
+    ports:
+      - 8787:8787
+    volumes:
+      - ./R:/home/rstudio
+    tty: true
+    stdin_open: true
